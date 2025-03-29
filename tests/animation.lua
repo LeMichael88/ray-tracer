@@ -3,7 +3,7 @@
 -- Animation Settings
 startFrame = 0
 frames = 307
-output_path = 'assets/animation'
+output_path = 'tests/animation'
 
 if frames > 1 or startFrame ~= 0 then output_path = 'renders/frames/animation' end
 

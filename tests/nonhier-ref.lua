@@ -4,9 +4,9 @@ mat1_ref = gr.reflective_material({0.7, 1.0, 0.7}, {0.5, 0.7, 0.5}, {0.15, 0.15,
 mat2_ref = gr.reflective_material({0.5, 0.5, 0.5}, {0.5, 0.7, 0.5}, {0.2, 0.2, 0.2}, 25)
 mat3_ref = gr.reflective_material({1.0, 0.6, 0.1}, {0.5, 0.7, 0.5}, {0.1, 0.1, 0.1}, 25)
 mat4_ref = gr.reflective_material({0.7, 0.6, 1.0}, {0.5, 0.4, 0.8}, {0.1, 0.1, 0.1}, 25)
-globe = gr.textured_material({0.7, 0.7, 0.7}, {0.5, 0.5, 0.5}, {0.0, 0.0, 0.0}, 25, "tests/earth.png")
-grass = gr.textured_material({1.0, 1.0, 1.0}, {0.5, 0.5, 0.5}, {0.0, 0.0, 0.0}, 25, "tests/grass.png")
-stone = gr.textured_material({1.0, 1.0, 1.0}, {0.5, 0.5, 0.5}, {0.3, 0.3, 0.3}, 25, "tests/stone.png")
+globe = gr.textured_material({0.7, 0.7, 0.7}, {0.5, 0.5, 0.5}, {0.0, 0.0, 0.0}, 25, "assets/earth.png")
+grass = gr.textured_material({1.0, 1.0, 1.0}, {0.5, 0.5, 0.5}, {0.0, 0.0, 0.0}, 25, "assets/grass.png")
+stone = gr.textured_material({1.0, 1.0, 1.0}, {0.5, 0.5, 0.5}, {0.3, 0.3, 0.3}, 25, "assets/stone.png")
 
 scene_root = gr.node('root')
 
@@ -37,17 +37,13 @@ s5:set_material(mat1_ref)
 
 -- A small stellated dodecahedron.
 
-steldodec = gr.mesh( 'dodec', 'tests/smstdodeca.obj' )
+steldodec = gr.mesh( 'dodec', 'assets/smstdodeca.obj' )
 steldodec:set_material(stone)
 scene_root:add_child(steldodec)
-
--- Particles
-p1 = gr.particles('p1', {0, -100, 125}, 200, 15, 1, 20, 'y', -3, mat1_ref)
-scene_root:add_child(p1)
 
 white_light = gr.light({-100.0, 150.0, 400.0}, {0.9, 0.9, 0.9}, {1, 0, 0})
 magenta_light = gr.light({400.0, 100.0, 150.0}, {0.7, 0.0, 0.7}, {1, 0, 0})
 
-gr.render(scene_root, 'tests/nonhier-par', 512, 512, 1,
+gr.render(scene_root, 'tests/nonhier-ref', 512, 512, 1, 1,
 	  {0, 0, 800}, {0, 0, -1}, {0, 1, 0}, 50,
-	  {0.3, 0.3, 0.3}, {white_light, magenta_light}, {p1})
+	  {0.3, 0.3, 0.3}, {white_light, magenta_light}, {})
