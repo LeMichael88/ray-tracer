@@ -25,7 +25,7 @@ Some additional features include a particle system and basic animation support.
 ---
 
 ## Building 
-We use **premake5** as our cross-platform build system.
+**Premake5** is used for cross-platform build system.
 First you will need to build all the static libraries that the projects depend on.
 To build the libraries, run the following in the root directory:
 ```
