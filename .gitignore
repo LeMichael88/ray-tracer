@@ -1,0 +1,20 @@
+# Build artifacts
+*.a
+*.o
+build/
+
+# IDE files
+.idea/
+*.swp
+*.swo
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Project-specific
+Makefile
+src/RayTracer
+
+# Renders
+src/renders/frames/
