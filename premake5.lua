@@ -3,7 +3,7 @@
 -- Set common variables
 includeDirList = { "external" }
 libDirectories = { "lib" }
-buildOptions = { "-std=c++14", "-O2" }
+buildOptions = { "-std=c++17", "-O2" }
 PLATFORM = os.target()
 
 -- Create lib directory if it does not exist
