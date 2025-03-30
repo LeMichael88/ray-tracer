@@ -15,7 +15,7 @@ end
 if not os.isfile("lib/liblua.a") then
     os.chdir("external/lua-5.4.7")
     if PLATFORM == "macosx" then
-        os.execute("make macosx")
+        os.execute("sudo make macosx")
     elseif PLATFORM == "linux" then
         os.execute("make linux")
     elseif PLATFORM == "windows" then

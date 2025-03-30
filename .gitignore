@@ -1,9 +1,3 @@
-# Build artifacts
-*.a
-*.o
-build/
-lib/
-
 # IDE files
 .idea/
 *.swp
@@ -22,3 +16,13 @@ renders/frames/
 
 # Dependencies
 !/external/**
+external/.DS_Store
+external/
+lua
+luac
+
+# Build artifacts
+*.a
+*.o
+build/
+lib/
