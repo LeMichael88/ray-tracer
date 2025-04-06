@@ -2,17 +2,17 @@
 
 -- Set common variables
 includeDirList = { "external" }
-libDirectories = { "lib" }
+libDirectories = { "build/lib" }  -- Updated lib directory path
 buildOptions = { "-std=c++17", "-O2" }
 PLATFORM = os.target()
 
 -- Create lib directory if it does not exist
-if not os.isdir("lib") then
-    os.mkdir("lib")
+if not os.isdir("build/lib") then  -- Updated path
+    os.mkdir("build/lib")
 end
 
 -- Build lua-5.4.7 library and copy it into lib if not present
-if not os.isfile("lib/liblua.a") then
+if not os.isfile("build/lib/liblua.a") then  -- Updated path
     os.chdir("external/lua-5.4.7")
     if PLATFORM == "macosx" then
         os.execute("sudo make macosx")
@@ -22,7 +22,7 @@ if not os.isfile("lib/liblua.a") then
         os.execute("make mingw")
     end
     os.chdir("../../")
-    os.execute("cp external/lua-5.4.7/src/liblua.a lib/")
+    os.execute("cp external/lua-5.4.7/src/liblua.a build/lib/")  -- Updated path
 end
 
 -- Set up linking parameters for the RayTracer project

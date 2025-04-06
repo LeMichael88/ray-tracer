@@ -31,8 +31,8 @@ and shading effects. Implemented features include:
 ## Prerequisites
 * C++17 or higher
 * CMake
-* Premake
-  * https://premake.github.io/
+* Premake5 (optional, for legacy build system)
+  * https://premake.github.io/ 
 
 ## Dependencies
 This project uses the following libraries, found in the `external` folder:
@@ -50,9 +50,32 @@ This project uses the following libraries, found in the `external` folder:
 ---
 
 ## Build Instructions
-**Premake5** is used as a cross-platform build system.
-First you will need to build all the static libraries that the projects depend on.
-To build the libraries, run the following in the root directory:
+
+### Using CMake
+**CMake** is the recommended build system for this project.
+To build the project using CMake, follow these steps:
+1. Create a build directory in the root of the folder:
+   ```bash
+   mkdir build
+   cd build
+   ```
+2. In the `build` folder, run CMake to configure the project:
+   ```bash
+   cmake ..
+   ```
+3. Build the project:
+   ```bash
+   cmake --build .
+   ```
+
+This will generate an executable named `RayTracer` in the root directory.
+
+### [Deprecated] Using Premake5
+**Note:** It is encouraged to use CMake moving forward. The `premake5.lua` file remains for reference.
+
+**Premake5** was used as a cross-platform build system.
+First you will need to build all the static libraries that the projects depend on and generate a Makefile.
+To do this, run the following in the root directory:
 ```
 premake5 gmake
 make
