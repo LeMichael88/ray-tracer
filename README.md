@@ -44,7 +44,7 @@ This project uses the following libraries, found in the `external` folder:
   * https://github.com/ocornut/imgui
 * Graphics Framework 
   * Helper functions for reading mesh files, from CS488 course at University of Waterloo
-* Polyroots helper functions (found directly in `src` folder)
+* Polyroots helper functions (found in `graphics-framework` library)
   * Helper functions for finding quadratic roots, from University of Washington, James Painter
 
 ---

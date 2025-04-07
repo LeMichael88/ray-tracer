@@ -3,8 +3,7 @@
 #include <iostream>
 
 #include <glm/gtx/io.hpp>
-
-#include "polyroots.hpp"
+#include <graphics-framework/polyroots.hpp>
 
 // Epsilon check
 const double E = 1e-2;

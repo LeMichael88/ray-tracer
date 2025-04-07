@@ -22,6 +22,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
 
 # Include directories
 include_directories(${CMAKE_SOURCE_DIR}/external)
+include_directories(${CMAKE_SOURCE_DIR}/src)
 
 # Create build/lib directory if it doesn't exist
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -65,7 +66,7 @@ file(GLOB LODEPNG_SOURCES "${CMAKE_SOURCE_DIR}/external/lodepng/lodepng.cpp")
 target_sources(lodepng PRIVATE
     ${LODEPNG_SOURCES}
 )
-target_include_directories(lodepng PRIVATE 
+target_include_directories(lodepng PRIVATE
     ${CMAKE_SOURCE_DIR}/external
     ${CMAKE_SOURCE_DIR}/external/lodepng
 )
