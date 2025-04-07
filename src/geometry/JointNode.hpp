@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SceneNode.hpp"
+#include "geometry/SceneNode.hpp"
 
 class JointNode : public SceneNode {
 public:

@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Animation.hpp"
-#include "Material.hpp"
-#include "Primitive.hpp"
-#include "SceneNode.hpp"
+#include "animation/Animation.hpp"
+#include "materials/Material.hpp"
+#include "geometry/Primitive.hpp"
+#include "geometry/SceneNode.hpp"
 
 class GeometryNode : public SceneNode {
 public:

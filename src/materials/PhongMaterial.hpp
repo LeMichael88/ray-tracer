@@ -2,8 +2,8 @@
 
 #include <glm/glm.hpp>
 
-#include "Image.hpp"
-#include "Material.hpp"
+#include "utils/Image.hpp"
+#include "materials/Material.hpp"
 
 using Color = glm::vec3;
 

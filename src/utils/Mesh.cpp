@@ -1,10 +1,10 @@
-#include <iostream>
+#include "Mesh.hpp"
+
 #include <fstream>
+#include <iostream>
 
 #include <glm/ext.hpp>
 #include <glm/gtx/io.hpp>
-
-#include "Mesh.hpp"
 
 //---------------------------------------------------------------------------------------
 Mesh::Mesh( const std::string& fname )

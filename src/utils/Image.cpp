@@ -1,7 +1,8 @@
 #include "Image.hpp"
 
-#include <iostream>
 #include <cstring>
+#include <iostream>
+
 #include <lodepng/lodepng.h>
 
 const uint Image::m_colorComponents = 3; // Red, blue, green

@@ -4,7 +4,7 @@
 
 #include <glm/glm.hpp>
 
-#include "PhongMaterial.hpp"
+#include "materials/PhongMaterial.hpp"
 
 class Ray {
 public:

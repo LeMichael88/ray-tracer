@@ -1,8 +1,8 @@
+#include "Light.hpp"
+
 #include <iostream>
 
 #include <glm/ext.hpp>
-
-#include "Light.hpp"
 
 //---------------------------------------------------------------------------------------
 Light::Light()

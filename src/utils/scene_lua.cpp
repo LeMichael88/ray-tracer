@@ -40,18 +40,17 @@
 #include <map>
 #include <vector>
 
-#include "lua.hpp"
-
-#include "RayTracer.hpp"
-#include "Animation.hpp"
-#include "GeometryNode.hpp"
-#include "JointNode.hpp"
-#include "Light.hpp"
-#include "Material.hpp"
-#include "Mesh.hpp"
-#include "ParticleNode.hpp"
-#include "PhongMaterial.hpp"
-#include "Primitive.hpp"
+#include "animation/Animation.hpp"
+#include "core/RayTracer.hpp"
+#include "geometry/GeometryNode.hpp"
+#include "geometry/JointNode.hpp"
+#include "geometry/Primitive.hpp"
+#include "lighting/Light.hpp"
+#include "materials/Material.hpp"
+#include "materials/PhongMaterial.hpp"
+#include "particles/ParticleNode.hpp"
+#include "utils/Mesh.hpp"
+#include "utils/lua.hpp"
 
 typedef std::map<std::string,Mesh*> MeshMap;
 static MeshMap mesh_map;

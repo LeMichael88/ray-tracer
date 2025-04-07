@@ -23,6 +23,13 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR})
 # Include directories
 include_directories(${CMAKE_SOURCE_DIR}/external)
 include_directories(${CMAKE_SOURCE_DIR}/src)
+include_directories(${CMAKE_SOURCE_DIR}/src/core)
+include_directories(${CMAKE_SOURCE_DIR}/src/geometry)
+include_directories(${CMAKE_SOURCE_DIR}/src/particles)
+include_directories(${CMAKE_SOURCE_DIR}/src/materials)
+include_directories(${CMAKE_SOURCE_DIR}/src/lighting)
+include_directories(${CMAKE_SOURCE_DIR}/src/animation)
+include_directories(${CMAKE_SOURCE_DIR}/src/utils)
 
 # Create build/lib directory if it doesn't exist
 file(MAKE_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -72,7 +79,7 @@ target_include_directories(lodepng PRIVATE
 )
 
 # Add the RayTracer executable
-file(GLOB SOURCES "${CMAKE_SOURCE_DIR}/src/*.cpp")
+file(GLOB_RECURSE SOURCES "${CMAKE_SOURCE_DIR}/src/**/*.cpp")
 add_executable(RayTracer ${SOURCES})
 
 # Link libraries

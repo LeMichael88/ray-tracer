@@ -4,8 +4,8 @@
 
 #include <glm/glm.hpp>
 
-#include "Animation.hpp"
-#include "Ray.hpp"
+#include "animation/Animation.hpp"
+#include "core/Ray.hpp"
 
 //---------------------------------------------------------------------------------------
 class Primitive {

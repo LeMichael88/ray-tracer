@@ -5,7 +5,7 @@
 
 #include <glm/glm.hpp>
 
-#include "Animation.hpp"
+#include "animation/Animation.hpp"
 
 // Represents a simple point light.
 class Light {

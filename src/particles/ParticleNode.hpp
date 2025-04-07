@@ -1,8 +1,8 @@
 #pragma once
 
-#include "GeometryNode.hpp"
-#include "Material.hpp"
-#include "SceneNode.hpp"
+#include "geometry/GeometryNode.hpp"
+#include "geometry/SceneNode.hpp"
+#include "materials/Material.hpp"
 
 // Use this #define to selectively compile your code to render the
 // bounding boxes around your mesh objects. Uncomment this option

@@ -1,7 +1,5 @@
 #include "SceneNode.hpp"
 
-#include "graphics-framework/MathUtils.hpp"
-
 #include <iostream>
 #include <sstream>
 using namespace std;
@@ -11,6 +9,7 @@ using namespace std;
 #include <glm/gtx/transform.hpp>
 using namespace glm;
 
+#include "graphics-framework/MathUtils.hpp"
 
 // Static class variable
 unsigned int SceneNode::nodeInstanceCount = 0;

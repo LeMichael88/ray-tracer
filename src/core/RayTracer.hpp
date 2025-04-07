@@ -1,14 +1,13 @@
 #pragma once
 
-
 #include <glm/glm.hpp>
 #include <glm/gtx/io.hpp>
 
-#include "Image.hpp"
-#include "Light.hpp"
-#include "ParticleNode.hpp"
-#include "Ray.hpp"
-#include "SceneNode.hpp"
+#include "core/Ray.hpp"
+#include "geometry/SceneNode.hpp"
+#include "lighting/Light.hpp"
+#include "particles/ParticleNode.hpp"
+#include "utils/Image.hpp"
 
 // Use this #define to selectively compile your code to print the
 // debug logs. Uncomment this option to turn it on.

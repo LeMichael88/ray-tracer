@@ -7,9 +7,9 @@
 
 #include <glm/glm.hpp>
 
-#include "Animation.hpp"
-#include "Material.hpp"
-#include "Ray.hpp"
+#include "animation/Animation.hpp"
+#include "core/Ray.hpp"
+#include "materials/Material.hpp"
 
 enum class NodeType {
 	SceneNode,

@@ -1,5 +1,6 @@
 #include <iostream>
-#include "scene_lua.hpp"
+
+#include "utils/scene_lua.hpp"
 
 int main(int argc, char** argv)
 {
