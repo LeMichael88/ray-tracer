@@ -29,6 +29,7 @@
 /// @date 2008-04-26 / 2014-05-10
 /// @author Christophe Riccio
 ///////////////////////////////////////////////////////////////////////////////////
+#pragma once
 
 #include <cstdarg>
 #include <cstdio>
@@ -49,7 +50,7 @@ namespace detail
 #		if(GLM_COMPILER & GLM_COMPILER_VC)
 			vsprintf_s(text, STRING_BUFFER, msg, list);
 #		else//
-			vsprintf(text, msg, list);
+			vsnprintf(text, STRING_BUFFER, msg, list);
 #		endif//
 		va_end(list);
 

@@ -1,3 +1,10 @@
+/*
+ * Name: Animation
+ * Description: Handles initializing animation objects to define geometry movement in
+ * world coordinates. This file defines hard-coded animation functions that are set in the
+ * lua files.
+ */
+
 #pragma once
 
 #include <glm/glm.hpp>
@@ -13,16 +20,16 @@ class Animation {
 public:
   Animation();
   Animation(
-    const float start, 
-    const float end, 
-    const char type,
+    float start,
+    float end,
+    char type,
     const char* functionName
   );
 
 	float m_start;
   float m_end;
   AnimationType m_type;
-  glm::vec3 (*m_animation)(const float);
-  float (*m_scalarAnimation)(const float);
-  glm::vec3 (*m_vertexDisplacement)(const glm::vec3, const float);
+  glm::vec3 (*m_animation)(float);
+  float (*m_scalarAnimation)(float);
+  glm::vec3 (*m_vertexDisplacement)(glm::vec3, float);
 };

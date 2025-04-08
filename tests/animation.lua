@@ -230,7 +230,7 @@ sun = gr.mesh('sun', 'assets/smstellateddodecahedron.obj')
 scene:add_child(sun)
 sun:set_material(yellow)
 sun:set_animation(0, 307, 'r', 'spin')
-sun:set_animation(0, 307, 't', 'suntrans')
+sun:set_animation(0, 307, 't', 'sunTrans')
 sun:set_animation(124, 194, 't', 'up')
 
 -- Clouds

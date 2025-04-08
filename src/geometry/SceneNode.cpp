@@ -1,10 +1,8 @@
 #include "SceneNode.hpp"
 
-#include <iostream>
 #include <sstream>
 using namespace std;
 
-#include <glm/glm.hpp>
 #include <glm/ext.hpp>
 #include <glm/gtx/transform.hpp>
 using namespace glm;
@@ -16,8 +14,8 @@ unsigned int SceneNode::nodeInstanceCount = 0;
 
 
 //---------------------------------------------------------------------------------------
-SceneNode::SceneNode(const std::string& name)
-  : m_name(name),
+SceneNode::SceneNode(std::string  name)
+  : m_name(std::move(name)),
 	m_nodeType(NodeType::SceneNode),
 	trans(mat4()),
 	invtrans(mat4()),
@@ -179,6 +177,11 @@ std::ostream & operator << (std::ostream & os, const SceneNode & node) {
 			break;
 		case NodeType::JointNode:
 			os << "JointNode";
+			break;
+		case NodeType::ParticleNode:
+			os << "ParticleNode";
+			break;
+		default:
 			break;
 	}
 	os << ":[";

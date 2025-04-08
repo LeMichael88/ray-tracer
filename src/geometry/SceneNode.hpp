@@ -20,7 +20,7 @@ enum class NodeType {
 
 class SceneNode {
 public:
-  SceneNode(const std::string & name);
+  SceneNode(std::string  name);
 
 	SceneNode(const SceneNode & other);
 
