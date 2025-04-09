@@ -9,6 +9,9 @@
 
 #include <glm/glm.hpp>
 
+/**
+ * AnimationType defines the type of animation that an animation will perform.
+ */
 enum class AnimationType {
   None,
   Translate,
@@ -16,6 +19,9 @@ enum class AnimationType {
   VertexDisplacement
 };
 
+/**
+ * Animation contains all data needed to define an animation on an object.
+ */
 class Animation {
 public:
   Animation();
@@ -26,9 +32,11 @@ public:
     const char* functionName
   );
 
-	float m_start;
+  float m_start;
   float m_end;
   AnimationType m_type;
+
+  // Based on the type of animation, only one of the following should be used
   glm::vec3 (*m_animation)(float);
   float (*m_scalarAnimation)(float);
   glm::vec3 (*m_vertexDisplacement)(glm::vec3, float);

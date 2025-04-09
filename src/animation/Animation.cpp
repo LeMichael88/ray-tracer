@@ -3,35 +3,55 @@
 #include <cstring>
 
 //---------------------------------------------------------------------------------------
-// right is used for linearly moving an object to the right in world coordinates
+/**
+ * right is used for linearly moving an object to the right in world coordinates
+ * @param t The frame time to calculate the translation
+ * @return A vec3 representing the translation amount
+ */
 glm::vec3 right(const float t)
 {
 	return {0.12f * t, 0.0f, 0.0f};
 }
 
 //---------------------------------------------------------------------------------------
-// left is used for linearly moving an object to the left in world coordinates
+/**
+ * left is used for linearly moving an object to the left in world coordinates
+ * @param t The frame time to calculate the translation
+ * @return A vec3 representing the translation amount
+ */
 glm::vec3 left(const float t)
 {
   return {-0.14f * t, 0.0f, 0.0f};
 }
 
 //---------------------------------------------------------------------------------------
-// left2 is used for linearly moving an object to the left in world coordinates
+/**
+ * left2 is used for linearly moving an object to the left in world coordinates
+ * @param t The frame time to calculate the translation
+ * @return A vec3 representing the translation amount
+ */
 glm::vec3 left2(const float t)
 {
   return {-0.12f * t, 0.0f, 0.0f};
 }
 
 //---------------------------------------------------------------------------------------
-// up is used for linearly moving an object up in world coordinates
+/**
+ * up is used for linearly moving an object up in world coordinates
+ * @param t The frame time to calculate the translation
+ * @return A vec3 representing the translation amount
+ */
 glm::vec3 up(const float t)
 {
   return {0.0f, 0.72f * t, 0.0f};
 }
 
 //---------------------------------------------------------------------------------------
-// sunTrans is used for linearly moving an object up in world coordinates
+/**
+ * sunTrans is used for linearly moving the sun upwards in world coordinates
+ * @param t The frame time to calculate the translation
+ * @return A vec3 representing the translation amount
+ */
 glm::vec3 sunTrans(const float t)
 {
   return {0.0f, -25.0f, -40.0f};
@@ -39,14 +59,22 @@ glm::vec3 sunTrans(const float t)
 
 
 //---------------------------------------------------------------------------------------
-// down is used for linearly moving an object down in world coordinates
+/**
+ * down is used for linearly moving an object down in world coordinates
+ * @param t The frame time to calculate the translation
+ * @return A vec3 representing the translation amount
+ */
 glm::vec3 down(const float t)
 {
   return {0.0f, -0.65f * t, 0.0f};
 }
 
 //---------------------------------------------------------------------------------------
-// rightFall is used for parabolic motion falling to the right
+/**
+ * rightFall is used for parabolic motion falling to the right
+ * @param t The frame time to calculate the translation
+ * @return A vec3 representing the translation amount
+ */
 glm::vec3 rightFall(const float t)
 {
   float deltaT = t * 0.1f;
@@ -54,7 +82,11 @@ glm::vec3 rightFall(const float t)
 }
 
 //---------------------------------------------------------------------------------------
-// leftFall is used for parabolic motion falling to the left
+/**
+ * leftFall is used for parabolic motion falling to the left
+ * @param t The frame time to calculate the translation
+ * @return A vec3 representing the translation amount
+ */
 glm::vec3 leftFall(const float t)
 {
   float deltaT = t * 0.1f;
@@ -62,28 +94,45 @@ glm::vec3 leftFall(const float t)
 }
 
 //---------------------------------------------------------------------------------------
-// camera is used for the camera movement
+/**
+ * camera is used for the camera movement
+ * @param t The frame time to calculate the translation
+ * @return A vec3 representing the translation amount
+ */
 glm::vec3 camera(const float t)
 {
   return {0.0f, -1.0f * (sin(0.131f * t) + (0.209f * t)), -0.8f * t};
 }
 
 //---------------------------------------------------------------------------------------
-// view is used for the view point movement
+/**
+ * view is used for the camera movement
+ * @param t The frame time to calculate the translation
+ * @return A vec3 representing the translation amount
+ */
 glm::vec3 view(const float t)
 {
   return {0.0f, 0.104f * t, 0.0f};
 }
 
 //---------------------------------------------------------------------------------------
-// spin is used to rotate an object (output is in degrees)
+/**
+ * spin is used for rotating an object in world coordinates
+ * @param t The frame time to calculate the rotation
+ * @return A float representing the rotation amount in degrees
+ */
 float spin(const float t)
 {
   return t * 1.5f;
 }
 
 //---------------------------------------------------------------------------------------
-// waves is used for displacement mapping for waves of a mesh
+/**
+ * waves is used for simulating waves in world coordinates using displacement mapping
+ * @param p The position of the point to be displaced
+ * @param t The frame time to calculate the displacement
+ * @return A vec3 representing the displacement amount
+ */
 glm::vec3 waves(const glm::vec3 p, const float t)
 {
   // To calm the waves at a certain frame
@@ -110,7 +159,9 @@ glm::vec3 waves(const glm::vec3 p, const float t)
 }
 
 //---------------------------------------------------------------------------------------
-// Basic constructor
+/**
+ * Default Constructor for Animation
+ */
 Animation::Animation()
   : m_start(0),
     m_end(0),
@@ -121,7 +172,14 @@ Animation::Animation()
 }
 
 //---------------------------------------------------------------------------------------
-// Constructor that defines the animation type, start/end frame, and function
+/**
+ * Custom constructor for Animation to initialize core animation properties
+ * @param start The starting frame of the animation
+ * @param end The ending frame of the animation
+ * @param type The type of animation (t, r, d) for translation, rotation, displacement
+ * @param functionName The name of the function to be used for the animation, should
+ * match a function name in Animation.cpp
+ */
 Animation::Animation(
   const float start, 
   const float end, 
