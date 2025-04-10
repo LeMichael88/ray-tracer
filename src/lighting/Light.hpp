@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include <vector>
+#include <ostream>
 
 #include <glm/glm.hpp>
 
