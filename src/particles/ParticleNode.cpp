@@ -1,17 +1,31 @@
 #include "ParticleNode.hpp"
 
+#include <random>
+
 #include <glm/gtx/io.hpp>
 
 //---------------------------------------------------------------------------------------
+/**
+ * ParticleNode constructor
+ * @param name Name of the node
+ * @param pos Initial point to base the particle system around
+ * @param area Side length of the area in which particles are spawned
+ * @param spawnRate Number of particles to spawn per frame
+ * @param particleRadius Radius of each particle
+ * @param particleLifeSpan Life span of each particle in frames
+ * @param particleDirection Direction in which particles move (X, Y, or Z)
+ * @param particleSpeed Speed at which particles move
+ * @param particleMaterial Material used for the particles' colour
+ */
 ParticleNode::ParticleNode(
   const std::string& name,
-  glm::vec3 pos,
-  float area,
-  int spawnRate,
-  float particleRadius,
-  float particleLifeSpan,
-  char particleDirection,
-  float particleSpeed,
+  const glm::vec3 pos,
+  const float area,
+  const int spawnRate,
+  const float particleRadius,
+  const float particleLifeSpan,
+  const char particleDirection,
+  const float particleSpeed,
   Material *particleMaterial
 )
   : SceneNode(name),
@@ -66,13 +80,21 @@ ParticleNode::ParticleNode(
 }
 
 //---------------------------------------------------------------------------------------
+/**
+ * createParticle spawns a new particle at a random point on the spawn plane.
+ * @param currFrame Current frame of the animation
+ */
 void ParticleNode::createParticle(const int currFrame)
 {
+  // Initialize with random seed
+  std::mt19937 randomEngine(std::random_device{}());
+  std::uniform_real_distribution<float> m_distribution(0.0f, 1.0f);
+
   // Generate a random position on the starting plane
   // Adds some wiggle room for the particles so things don't get clipped
-  float i = (static_cast<float>(std::rand()) / RAND_MAX) 
+  float i = m_distribution(randomEngine)
             * (m_area - (2.0f * m_particleRadius)) + m_particleRadius;
-  float j = (static_cast<float>(std::rand()) / RAND_MAX) 
+  float j = m_distribution(randomEngine)
             * (m_area - (2.0f * m_particleRadius)) + m_particleRadius;
   
   glm::vec3 particleSpawnPos;
@@ -104,12 +126,17 @@ void ParticleNode::createParticle(const int currFrame)
   // Set up the particle to spawn at this position and move
   NonhierSphere p = NonhierSphere(particleSpawnPos, m_particleRadius);
   p.m_startFrame = currFrame;
-  p.m_endFrame = currFrame + m_particleLifeSpan;
+  p.m_endFrame = static_cast<int>(m_particleLifeSpan) + currFrame;
   p.m_translation = m_particleDisplacement;
   m_particles.push_back(p);
 }
 
 //---------------------------------------------------------------------------------------
+/**
+ * preprocessParticles spawns new particles and removes expired ones at the start of
+ * each frame
+ * @param currFrame Current frame of the animation
+ */
 void ParticleNode::preprocessParticles(const int currFrame)
 {
   // Create particles this frame based on spawn rate
@@ -120,7 +147,7 @@ void ParticleNode::preprocessParticles(const int currFrame)
 
   // Clear out any particles that have expired
   m_particles.remove_if(
-    [currFrame](NonhierSphere& particle)
+    [currFrame](const NonhierSphere& particle)
     {
       return (particle.m_endFrame == currFrame);
     }
@@ -128,9 +155,14 @@ void ParticleNode::preprocessParticles(const int currFrame)
 }
 
 //---------------------------------------------------------------------------------------
-// Checks if this particle system intersects with the ray
-// Since particles are restricted to the bounding volume, only proceed if ray
-// intersects with the bounding volume
+// Checks
+/**
+ * intersect if this particle system intersects with the ray. Since particles are
+ * restricted to the bounding volume, only proceed if ray intersects with the bounding
+ * volume.
+ * @param ray Ray to check for intersection with the particle system
+ * @return Intersection object containing information about the intersection
+ */
 Intersection ParticleNode::intersect(const Ray& ray) const
 {
   Intersection intersection;
@@ -152,7 +184,7 @@ Intersection ParticleNode::intersect(const Ray& ray) const
 	}
 
   // Otherwise, check for intersection with all particles
-  for (const NonhierSphere particle : m_particles)
+  for (const NonhierSphere& particle : m_particles)
   {
     // If this node intersected with the ray, update intersection values
     Intersection temp;
@@ -165,7 +197,7 @@ Intersection ParticleNode::intersect(const Ray& ray) const
            glm::length(intersection.m_point - ray.transformedOrigin())))
       ) {
         // Found valid intersection, update material, normal, uv coordinates
-        intersection.m_material = static_cast<PhongMaterial*>(m_particleMaterial);
+        intersection.m_material = dynamic_cast<PhongMaterial*>(m_particleMaterial);
         particle.normal(intersection.m_point, ray.time(), intersection.m_normal);
         particle.getUV(intersection.m_point, ray.time(), intersection.m_uv);
         intersection.m_foundIntersection = true;
