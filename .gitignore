@@ -17,7 +17,6 @@ renders/frames/
 # Dependencies
 !/external/**
 external/.DS_Store
-external/
 lua
 luac
 
