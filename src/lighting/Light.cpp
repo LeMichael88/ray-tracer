@@ -5,6 +5,9 @@
 #include <glm/ext.hpp>
 
 //---------------------------------------------------------------------------------------
+/**
+ * Default Constructor for Light
+ */
 Light::Light()
   : m_colour(0.0, 0.0, 0.0),
     m_position(0.0, 0.0, 0.0)
@@ -15,7 +18,10 @@ Light::Light()
 }
 
 //---------------------------------------------------------------------------------------
-// Animates a light for this frame by displacing it using m_animations
+/**
+ * animateLight is used to translate light position based on the attached animation
+ * @param t The frame time to calculate the translation
+ */
 void Light::animateLight(const float t)
 {
 	// Store the transformation matrix before animation so we can reset it
@@ -44,12 +50,21 @@ void Light::animateLight(const float t)
 }
 
 //---------------------------------------------------------------------------------------
-// Resets this light's transformation to its original position
+/**
+ * resetAnimation resets the light position to the original position
+ */
 void Light::resetAnimation()
 {
 	m_position = m_originalPosition;
 }
 
+//---------------------------------------------------------------------------------------
+/**
+ * operator<< overload for Light for printing purposes
+ * @param out The output stream
+ * @param l The light to be printed
+ * @return The output stream
+ */
 std::ostream& operator<<(std::ostream& out, const Light& l)
 {
   out << "L[" << glm::to_string(l.m_colour)

@@ -20,7 +20,7 @@ enum class AnimationType {
 };
 
 /**
- * Animation contains all data needed to define an animation on an object.
+ * Animation class contains all data needed to define an animation on an object.
  */
 class Animation {
 public:
