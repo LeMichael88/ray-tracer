@@ -4,13 +4,13 @@
 #include <iostream>
 
 #include <glm/ext.hpp>
-#include <glm/gtx/io.hpp>
 
 //---------------------------------------------------------------------------------------
-Mesh::Mesh( const std::string& fname )
-	: m_vertices(),
-		m_faces(),
-		m_boundingBox()
+/**
+ * Custom constructor for Mesh that reads in an OBJ file and initializes the mesh
+ * geometry.
+ */
+Mesh::Mesh(const std::string& name)
 {
 	std::string code;
 	double vx, vy, vz;
@@ -24,11 +24,13 @@ Mesh::Mesh( const std::string& fname )
 	double max_y = -1.0f * std::numeric_limits<double>::max();
 	double max_z = -1.0f * std::numeric_limits<double>::max();
 
-	std::ifstream ifs( fname.c_str() );
-	while( ifs >> code ) {
-		if( code == "v" ) {
+	std::ifstream ifs(name.c_str());
+	while (ifs >> code)
+	{
+		if(code == "v")
+		{
 			ifs >> vx >> vy >> vz;
-			glm::vec3 v = glm::vec3( vx, vy, vz );
+			glm::vec3 v = glm::vec3(vx, vy, vz);
 			m_vertices.push_back( v );
 
 			min_x = std::min(min_x, vx);
@@ -37,9 +39,11 @@ Mesh::Mesh( const std::string& fname )
 			max_x = std::max(max_x, vx);
 			max_y = std::max(max_y, vy);
 			max_z = std::max(max_z, vz);
-		} else if( code == "f" ) {
+		}
+		else if(code == "f")
+		{
 			ifs >> s1 >> s2 >> s3;
-			m_faces.push_back( Triangle( s1 - 1, s2 - 1, s3 - 1 ) );
+			m_faces.emplace_back(s1 - 1, s2 - 1, s3 - 1);
 		}
 	}
 
@@ -53,7 +57,9 @@ Mesh::Mesh( const std::string& fname )
 }
 
 //---------------------------------------------------------------------------------------
-// Computes ray-mesh intersection and updates intersection if necessary
+/*
+ * intersect computes ray-mesh intersection and updates intersection if necessary
+ */
 bool Mesh::intersect(const Ray& ray, Intersection& intersection) const
 {
 #ifdef RENDER_BOUNDING_VOLUMES
@@ -72,12 +78,9 @@ bool Mesh::intersect(const Ray& ray, Intersection& intersection) const
 	bool intersectionFound = false;
 	glm::vec3 intersectionPoint;
 	glm::vec3 intersectionNormal;
-	int intersectionFace;
 	glm::vec2 intersectionUV;
-	for (int i = 0; i < m_faces.size(); i++) {
-		const Triangle& face = m_faces[i];
-
-		// Get the verticies of this face
+	for (const auto & face : m_faces) {
+		// Get the vertices of this face
 		glm::vec3 v1 = m_vertices[face.v1];
 		glm::vec3 v2 = m_vertices[face.v2];
 		glm::vec3 v3 = m_vertices[face.v3];
@@ -120,12 +123,10 @@ bool Mesh::intersect(const Ray& ray, Intersection& intersection) const
 		}
 		
 		// If an intersection has already been found check which one is closer
-		if (!intersectionFound ||
-				(intersectionFound &&
-					(glm::length(p - ray.transformedOrigin()) < 
-					glm::length(intersectionPoint - ray.transformedOrigin())))
+		if (
+			!intersectionFound ||
+			glm::length(p - ray.transformedOrigin()) < glm::length(intersectionPoint - ray.transformedOrigin())
 		) {
-				intersectionFace = i;
 				intersectionPoint = p;
 				intersectionUV = glm::vec2(beta + gamma, beta);
 				intersectionNormal = glm::normalize(glm::cross(v2 - v1, v3 - v1));
@@ -144,6 +145,9 @@ bool Mesh::intersect(const Ray& ray, Intersection& intersection) const
 }
 
 //---------------------------------------------------------------------------------------
+/**
+ * Overloaded output operator to print a Mesh, useful for debugging.
+ */
 std::ostream& operator<<(std::ostream& out, const Mesh& mesh)
 {
   out << "mesh {\n";

@@ -1,3 +1,8 @@
+/*
+ * Name: Image
+ * Description: An image class that supports reading and writing PNG files.
+ */
+
 #pragma once
 
 #include <string>
@@ -9,7 +14,7 @@ typedef unsigned int uint;
 using Color = glm::vec3;
 
 /**
- * An image, consisting of a rectangle of floating-point elements.
+ * Image class consists of a rectangle of floating-point elements.
  * Each pixel element consists of 3 components: Red, Blue, and Green.
  *
  * This class makes it easy to save the image as a PNG file.
@@ -33,15 +38,15 @@ public:
 	Image & operator=(const Image & other);
 
 	// Returns the width of the image.
-	uint width() const;
+	[[nodiscard]] uint width() const;
 
 	// Returns the height of the image.
-	uint height() const;
+	[[nodiscard]] uint height() const;
 
 	// Retrieve the vec3 color from the image.
 	Color operator()(uint x, uint y) const;
 
-  // Retrieve a particular component from the image.
+	// Retrieve a particular component from the image.
 	double operator()(uint x, uint y, uint i) const;
 
 	// Retrieve a particular component from the image.
@@ -52,9 +57,9 @@ public:
 
 	// Save this image into the PNG file with name 'filename'.
 	// Warning: If 'filename' already exists, it will be overwritten.
-	bool savePng(const std::string & filename) const;
+	[[nodiscard]] bool savePng(const std::string & filename) const;
 
-	const double * data() const;
+	[[nodiscard]] const double * data() const;
 	double * data();
 
 private:
