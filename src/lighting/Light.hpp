@@ -18,17 +18,18 @@
  */
 class Light {
 public:
-  Light();
+    Light();
 
-  void animateLight(float t);
-  void resetAnimation();
+    void animateLight(float t);
 
-  glm::vec3 m_colour;
-  glm::vec3 m_position;
-  glm::vec3 m_originalPosition;
-  double m_falloff[3]{};
+    void resetAnimation();
 
-  Animation m_animation;
+    glm::vec3 m_colour;
+    glm::vec3 m_position;
+    glm::vec3 m_originalPosition;
+    double m_falloff[3]{};
+
+    Animation m_animation;
 };
 
 std::ostream& operator<<(std::ostream& out, const Light& l);

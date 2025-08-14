@@ -19,17 +19,16 @@
 /**
  * Triangle struct defines a triangular face for a mesh.
  */
-struct Triangle
-{
-	size_t v1;
-	size_t v2;
-	size_t v3;
+struct Triangle {
+    size_t v1;
+    size_t v2;
+    size_t v3;
 
-	Triangle(size_t pv1, size_t pv2, size_t pv3)
-		: v1(pv1),
-			v2(pv2),
-			v3(pv3)
-	{}
+    Triangle(size_t pv1, size_t pv2, size_t pv3)
+        : v1(pv1),
+          v2(pv2),
+          v3(pv3)
+    {}
 };
 
 /*
@@ -37,14 +36,14 @@ struct Triangle
  */
 class Mesh : public Primitive {
 public:
-  explicit Mesh(const std::string& name);
+    explicit Mesh(const std::string& name);
 
-	bool intersect(const Ray& ray, Intersection& intersection) const override;
+    bool intersect(const Ray& ray, Intersection& intersection) const override;
 
 private:
-	std::vector<glm::vec3> m_vertices;
-	std::vector<Triangle> m_faces;
-	NonhierBox m_boundingBox;
+    std::vector<glm::vec3> m_vertices;
+    std::vector<Triangle> m_faces;
+    NonhierBox m_boundingBox;
 
-	friend std::ostream& operator<<(std::ostream& out, const Mesh& mesh);
+    friend std::ostream& operator<<(std::ostream& out, const Mesh& mesh);
 };

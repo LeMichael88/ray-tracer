@@ -12,58 +12,54 @@
 #include "materials/Material.hpp"
 
 enum class NodeType {
-	SceneNode,
-	GeometryNode,
-	JointNode,
-  ParticleNode,
+    SceneNode,
+    GeometryNode,
+    JointNode,
+    ParticleNode,
 };
 
 class SceneNode {
 public:
-  SceneNode(std::string  name);
+    SceneNode(std::string name);
+    SceneNode(const SceneNode& other);
+    virtual ~SceneNode();
 
-	SceneNode(const SceneNode & other);
+    int totalSceneNodes() const;
 
-  virtual ~SceneNode();
-    
-	int totalSceneNodes() const;
-    
-  const glm::mat4& get_transform() const;
-  const glm::mat4& get_inverse() const;
-  
-  void set_transform(const glm::mat4& m);
-  
-  void add_child(SceneNode* child);
-  
-  void remove_child(SceneNode* child);
+    const glm::mat4& get_transform() const;
+    const glm::mat4& get_inverse() const;
 
-	//-- Transformations:
-  void rotate(char axis, float angle);
-  void scale(const glm::vec3& amount);
-  void translate(const glm::vec3& amount);
+    void set_transform(const glm::mat4& m);
+    void add_child(SceneNode* child);
+    void remove_child(SceneNode* child);
 
-	void setAnimation(Animation* animation);
-	void animateNode(const float t);
-	void resetAnimation();
+    //-- Transformations:
+    void rotate(char axis, float angle);
+    void scale(const glm::vec3& amount);
+    void translate(const glm::vec3& amount);
 
-	friend std::ostream & operator << (std::ostream & os, const SceneNode & node);
+    void setAnimation(Animation* animation);
+    void animateNode(float t);
+    void resetAnimation();
 
-  virtual Intersection intersect(const Ray& ray) const;
+    friend std::ostream& operator <<(std::ostream& os, const SceneNode& node);
 
-  // Transformations
-  glm::mat4 trans;
-  glm::mat4 invtrans;
+    virtual Intersection intersect(const Ray& ray) const;
 
-  glm::mat4 m_originalTrans;
-	std::vector<Animation*> m_animations;
+    // Transformations
+    glm::mat4 trans;
+    glm::mat4 invtrans;
 
-  std::list<SceneNode*> children;
+    glm::mat4 m_originalTrans;
+    std::vector<Animation*> m_animations;
 
-	NodeType m_nodeType;
-	std::string m_name;
-	unsigned int m_nodeId;
+    std::list<SceneNode*> children;
+
+    NodeType m_nodeType;
+    std::string m_name;
+    unsigned int m_nodeId;
 
 private:
-	// The number of SceneNode instances.
-	static unsigned int nodeInstanceCount;
+    // The number of SceneNode instances.
+    static unsigned int nodeInstanceCount;
 };

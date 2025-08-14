@@ -8,8 +8,8 @@
 
 class Material {
 public:
-  virtual ~Material();
+    virtual ~Material();
 
 protected:
-  Material();
+    Material();
 };

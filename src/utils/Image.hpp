@@ -23,49 +23,50 @@ using Color = glm::vec3;
  */
 class Image {
 public:
-	// Construct an empty image.
-	Image();
+    // Construct an empty image.
+    Image();
 
-	// Construct a black image at the given width/height.
-	Image(uint width, uint height);
+    // Construct a black image at the given width/height.
+    Image(uint width, uint height);
 
-	// Copy an image.
-	Image(const Image & other);
+    // Copy an image.
+    Image(const Image& other);
 
-	~Image();
+    ~Image();
 
-	// Copy the data from one image to another.
-	Image & operator=(const Image & other);
+    // Copy the data from one image to another.
+    Image& operator=(const Image& other);
 
-	// Returns the width of the image.
-	[[nodiscard]] uint width() const;
+    // Returns the width of the image.
+    [[nodiscard]] uint width() const;
 
-	// Returns the height of the image.
-	[[nodiscard]] uint height() const;
+    // Returns the height of the image.
+    [[nodiscard]] uint height() const;
 
-	// Retrieve the vec3 color from the image.
-	Color operator()(uint x, uint y) const;
+    // Retrieve the vec3 color from the image.
+    Color operator()(uint x, uint y) const;
 
-	// Retrieve a particular component from the image.
-	double operator()(uint x, uint y, uint i) const;
+    // Retrieve a particular component from the image.
+    double operator()(uint x, uint y, uint i) const;
 
-	// Retrieve a particular component from the image.
-	double & operator()(uint x, uint y, uint i);
+    // Retrieve a particular component from the image.
+    double& operator()(uint x, uint y, uint i);
 
-	// Read image data from a PNG file
-	bool readPng(const std::string & filename);
+    // Read image data from a PNG file
+    bool readPng(const std::string& filename);
 
-	// Save this image into the PNG file with name 'filename'.
-	// Warning: If 'filename' already exists, it will be overwritten.
-	[[nodiscard]] bool savePng(const std::string & filename) const;
+    // Save this image into the PNG file with name 'filename'.
+    // Warning: If 'filename' already exists, it will be overwritten.
+    [[nodiscard]] bool savePng(const std::string& filename) const;
 
-	[[nodiscard]] const double * data() const;
-	double * data();
+    [[nodiscard]] const double* data() const;
+
+    double* data();
 
 private:
-	uint m_width;
-	uint m_height;
-	double * m_data;
+    uint m_width;
+    uint m_height;
+    double* m_data;
 
-	static const uint m_colorComponents;
+    static const uint m_colorComponents;
 };

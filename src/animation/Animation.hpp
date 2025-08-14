@@ -13,10 +13,10 @@
  * AnimationType defines the type of animation that an animation will perform.
  */
 enum class AnimationType {
-  None,
-  Translate,
-  Rotate,
-  VertexDisplacement
+    None,
+    Translate,
+    Rotate,
+    VertexDisplacement
 };
 
 /**
@@ -24,20 +24,20 @@ enum class AnimationType {
  */
 class Animation {
 public:
-  Animation();
-  Animation(
-    float start,
-    float end,
-    char type,
-    const char* functionName
-  );
+    Animation();
+    Animation(
+        float start,
+        float end,
+        char type,
+        const char* functionName
+    );
 
-  float m_start;
-  float m_end;
-  AnimationType m_type;
+    float m_start;
+    float m_end;
+    AnimationType m_type;
 
-  // Based on the type of animation, only one of the following should be used
-  glm::vec3 (*m_animation)(float);
-  float (*m_scalarAnimation)(float);
-  glm::vec3 (*m_vertexDisplacement)(glm::vec3, float);
+    // Based on the type of animation, only one of the following should be used
+    glm::vec3 (*m_animation)(float);
+    float (*m_scalarAnimation)(float);
+    glm::vec3 (*m_vertexDisplacement)(glm::vec3, float);
 };

@@ -52,7 +52,7 @@
 #include "utils/Mesh.hpp"
 #include "utils/lua.hpp"
 
-typedef std::map<std::string,Mesh*> MeshMap;
+typedef std::map<std::string, Mesh*> MeshMap;
 static MeshMap mesh_map;
 
 // Uncomment the following line to enable debugging messages
@@ -82,638 +82,646 @@ static MeshMap mesh_map;
 // The "userdata" type for a node. Objects of this type will be
 // allocated by Lua to represent nodes.
 struct gr_node_ud {
-  SceneNode* node;
+    SceneNode* node;
 };
 
 // The "userdata" type for a particle node. Objects of this type
 // will be allocated by Lua to represent a particle system.
 struct gr_particles_ud {
-  ParticleNode* particles;
+    ParticleNode* particles;
 };
 
 // The "userdata" type for a material. Objects of this type will be
 // allocated by Lua to represent materials.
 struct gr_material_ud {
-  Material* material;
+    Material* material;
 };
 
 // The "userdata" type for a light. Objects of this type will be
 // allocated by Lua to represent lights.
 struct gr_light_ud {
-  Light* light;
+    Light* light;
 };
 
 // The "userdata" type for an animation. Objects of this type will be
 // allocated by Lua to represent an animation function.
 struct gr_animation_ud {
-  Animation* animation;
+    Animation* animation;
 };
 
 // Useful function to retrieve and check an n-tuple of numbers.
 template<typename T>
 void get_tuple(lua_State* L, int arg, T* data, int n)
 {
-  luaL_checktype(L, arg, LUA_TTABLE);
-  luaL_argcheck(L, lua_rawlen(L, arg) == n, arg, "N-tuple expected");
-  for (int i = 1; i <= n; i++) {
-    lua_rawgeti(L, arg, i);
-    data[i - 1] = luaL_checknumber(L, -1);
-    lua_pop(L, 1);
-  }
+    luaL_checktype(L, arg, LUA_TTABLE);
+    luaL_argcheck(L, lua_rawlen(L, arg) == n, arg, "N-tuple expected");
+    for (int i = 1; i <= n; i++)
+    {
+        lua_rawgeti(L, arg, i);
+        data[i - 1] = luaL_checknumber(L, -1);
+        lua_pop(L, 1);
+    }
 }
 
 // Create a Node
 extern "C"
 int gr_node_cmd(lua_State* L)
 {
-  GRLUA_DEBUG_CALL;
-  
-  gr_node_ud* data = (gr_node_ud*)lua_newuserdata(L, sizeof(gr_node_ud));
-  data->node = 0;
+    GRLUA_DEBUG_CALL;
 
-  const char* name = luaL_checkstring(L, 1);
-  data->node = new SceneNode(name);
+    gr_node_ud* data = (gr_node_ud*) lua_newuserdata(L, sizeof(gr_node_ud));
+    data->node = 0;
 
-  luaL_getmetatable(L, "gr.node");
-  lua_setmetatable(L, -2);
+    const char* name = luaL_checkstring(L, 1);
+    data->node = new SceneNode(name);
 
-  return 1;
+    luaL_getmetatable(L, "gr.node");
+    lua_setmetatable(L, -2);
+
+    return 1;
 }
 
 // Create a Joint node
 extern "C"
 int gr_joint_cmd(lua_State* L)
 {
-  GRLUA_DEBUG_CALL;
-  
-  gr_node_ud* data = (gr_node_ud*)lua_newuserdata(L, sizeof(gr_node_ud));
-  data->node = 0;
+    GRLUA_DEBUG_CALL;
 
-  const char* name = luaL_checkstring(L, 1);
-  JointNode* node = new JointNode(name);
+    gr_node_ud* data = (gr_node_ud*) lua_newuserdata(L, sizeof(gr_node_ud));
+    data->node = 0;
 
-  double x[3], y[3];
-  get_tuple(L, 2, x, 3);
-  get_tuple(L, 3, y, 3);
+    const char* name = luaL_checkstring(L, 1);
+    JointNode* node = new JointNode(name);
 
-  node->set_joint_x(x[0], x[1], x[2]);
-  node->set_joint_y(y[0], y[1], y[2]);
-  
-  data->node = node;
+    double x[3], y[3];
+    get_tuple(L, 2, x, 3);
+    get_tuple(L, 3, y, 3);
 
-  luaL_getmetatable(L, "gr.node");
-  lua_setmetatable(L, -2);
+    node->set_joint_x(x[0], x[1], x[2]);
+    node->set_joint_y(y[0], y[1], y[2]);
 
-  return 1;
+    data->node = node;
+
+    luaL_getmetatable(L, "gr.node");
+    lua_setmetatable(L, -2);
+
+    return 1;
 }
 
 // Create a Sphere node
 extern "C"
 int gr_sphere_cmd(lua_State* L)
 {
-  GRLUA_DEBUG_CALL;
-  
-  gr_node_ud* data = (gr_node_ud*)lua_newuserdata(L, sizeof(gr_node_ud));
-  data->node = 0;
-  
-  const char* name = luaL_checkstring(L, 1);
-  data->node = new GeometryNode( name, new Sphere() );
+    GRLUA_DEBUG_CALL;
 
-  luaL_getmetatable(L, "gr.node");
-  lua_setmetatable(L, -2);
+    gr_node_ud* data = (gr_node_ud*) lua_newuserdata(L, sizeof(gr_node_ud));
+    data->node = 0;
 
-  return 1;
+    const char* name = luaL_checkstring(L, 1);
+    data->node = new GeometryNode(name, new Sphere());
+
+    luaL_getmetatable(L, "gr.node");
+    lua_setmetatable(L, -2);
+
+    return 1;
 }
 
 // Create a cube node
 extern "C"
 int gr_cube_cmd(lua_State* L)
 {
-  GRLUA_DEBUG_CALL;
-  
-  gr_node_ud* data = (gr_node_ud*)lua_newuserdata(L, sizeof(gr_node_ud));
-  data->node = 0;
-  
-  const char* name = luaL_checkstring(L, 1);
-  data->node = new GeometryNode(name, new Cube());
+    GRLUA_DEBUG_CALL;
 
-  luaL_getmetatable(L, "gr.node");
-  lua_setmetatable(L, -2);
+    gr_node_ud* data = (gr_node_ud*) lua_newuserdata(L, sizeof(gr_node_ud));
+    data->node = 0;
 
-  return 1;
+    const char* name = luaL_checkstring(L, 1);
+    data->node = new GeometryNode(name, new Cube());
+
+    luaL_getmetatable(L, "gr.node");
+    lua_setmetatable(L, -2);
+
+    return 1;
 }
 
 // Create a non-hierarchical Sphere node
 extern "C"
 int gr_nh_sphere_cmd(lua_State* L)
 {
-  GRLUA_DEBUG_CALL;
-  
-  gr_node_ud* data = (gr_node_ud*)lua_newuserdata(L, sizeof(gr_node_ud));
-  data->node = 0;
+    GRLUA_DEBUG_CALL;
 
-  const char* name = luaL_checkstring(L, 1);
+    gr_node_ud* data = (gr_node_ud*) lua_newuserdata(L, sizeof(gr_node_ud));
+    data->node = 0;
 
-  glm::vec3 pos;
-  get_tuple(L, 2, &pos[0], 3);
+    const char* name = luaL_checkstring(L, 1);
 
-  double radius = luaL_checknumber(L, 3);
+    glm::vec3 pos;
+    get_tuple(L, 2, &pos[0], 3);
 
-  data->node = new GeometryNode(name, new NonhierSphere(pos, radius));
+    double radius = luaL_checknumber(L, 3);
 
-  luaL_getmetatable(L, "gr.node");
-  lua_setmetatable(L, -2);
+    data->node = new GeometryNode(name, new NonhierSphere(pos, radius));
 
-  return 1;
+    luaL_getmetatable(L, "gr.node");
+    lua_setmetatable(L, -2);
+
+    return 1;
 }
 
 // Create a non-hierarchical Box node
 extern "C"
 int gr_nh_box_cmd(lua_State* L)
 {
-  GRLUA_DEBUG_CALL;
-  
-  gr_node_ud* data = (gr_node_ud*)lua_newuserdata(L, sizeof(gr_node_ud));
-  data->node = 0;
+    GRLUA_DEBUG_CALL;
 
-  const char* name = luaL_checkstring(L, 1);
+    gr_node_ud* data = (gr_node_ud*) lua_newuserdata(L, sizeof(gr_node_ud));
+    data->node = 0;
 
-  glm::vec3 pos;
-  get_tuple(L, 2, &pos[0], 3);
+    const char* name = luaL_checkstring(L, 1);
 
-  double size = luaL_checknumber(L, 3);
+    glm::vec3 pos;
+    get_tuple(L, 2, &pos[0], 3);
 
-  data->node = new GeometryNode(name, new NonhierBox(pos, glm::vec3(size)));
+    double size = luaL_checknumber(L, 3);
 
-  luaL_getmetatable(L, "gr.node");
-  lua_setmetatable(L, -2);
+    data->node = new GeometryNode(name, new NonhierBox(pos, glm::vec3(size)));
 
-  return 1;
+    luaL_getmetatable(L, "gr.node");
+    lua_setmetatable(L, -2);
+
+    return 1;
 }
 
 // Create a polygonal Mesh node
 extern "C"
 int gr_mesh_cmd(lua_State* L)
 {
-	GRLUA_DEBUG_CALL;
+    GRLUA_DEBUG_CALL;
 
-	gr_node_ud* data = (gr_node_ud*)lua_newuserdata(L, sizeof(gr_node_ud));
-	data->node = 0;
+    gr_node_ud* data = (gr_node_ud*) lua_newuserdata(L, sizeof(gr_node_ud));
+    data->node = 0;
 
-	const char* name = luaL_checkstring(L, 1);
-	const char* obj_fname = luaL_checkstring(L, 2);
+    const char* name = luaL_checkstring(L, 1);
+    const char* obj_fname = luaL_checkstring(L, 2);
 
-	std::string sfname(obj_fname);
+    std::string sfname(obj_fname);
 
-	// Use a dictionary structure to make sure every mesh is loaded
-	// at most once.
-	auto i = mesh_map.find(sfname);
-	Mesh *mesh = nullptr;
+    // Use a dictionary structure to make sure every mesh is loaded
+    // at most once.
+    auto i = mesh_map.find(sfname);
+    Mesh* mesh = nullptr;
 
-	if( i == mesh_map.end() ) {
-		mesh = new Mesh(obj_fname);
-		mesh_map[sfname] = mesh;
-	} else {
-		mesh = i->second;
-	}
+    if (i == mesh_map.end())
+    {
+        mesh = new Mesh(obj_fname);
+        mesh_map[sfname] = mesh;
+    }
+    else
+    {
+        mesh = i->second;
+    }
 
-	data->node = new GeometryNode(name, mesh);
+    data->node = new GeometryNode(name, mesh);
 
-	luaL_getmetatable(L, "gr.node");
-	lua_setmetatable(L, -2);
+    luaL_getmetatable(L, "gr.node");
+    lua_setmetatable(L, -2);
 
-	return 1;
+    return 1;
 }
 
 // Make a Point light
 extern "C"
 int gr_light_cmd(lua_State* L)
 {
-  GRLUA_DEBUG_CALL;
+    GRLUA_DEBUG_CALL;
 
-  gr_light_ud* data = (gr_light_ud*)lua_newuserdata(L, sizeof(gr_light_ud));
-  data->light = 0;
+    gr_light_ud* data = (gr_light_ud*) lua_newuserdata(L, sizeof(gr_light_ud));
+    data->light = 0;
 
-  
-  Light l;
 
-  double col[3];
-  get_tuple(L, 1, &l.m_position[0], 3);
-  get_tuple(L, 2, col, 3);
-  get_tuple(L, 3, l.m_falloff, 3);
+    Light l;
 
-  l.m_colour = glm::vec3(col[0], col[1], col[2]);
-  
-  data->light = new Light(l);
+    double col[3];
+    get_tuple(L, 1, &l.m_position[0], 3);
+    get_tuple(L, 2, col, 3);
+    get_tuple(L, 3, l.m_falloff, 3);
 
-  luaL_newmetatable(L, "gr.light");
-  lua_setmetatable(L, -2);
+    l.m_colour = glm::vec3(col[0], col[1], col[2]);
 
-  return 1;
+    data->light = new Light(l);
+
+    luaL_newmetatable(L, "gr.light");
+    lua_setmetatable(L, -2);
+
+    return 1;
 }
 
 // Create a particle system node
 int gr_particles_cmd(lua_State* L)
 {
- GRLUA_DEBUG_CALL;
-  
-  gr_particles_ud* data = (gr_particles_ud*)lua_newuserdata(L, sizeof(gr_particles_ud));
-  data->particles = 0;
+    GRLUA_DEBUG_CALL;
 
-  const char* name = luaL_checkstring(L, 1);
+    gr_particles_ud* data = (gr_particles_ud*) lua_newuserdata(L, sizeof(gr_particles_ud));
+    data->particles = 0;
 
-  glm::vec3 pos;
-  get_tuple(L, 2, &pos[0], 3);
+    const char* name = luaL_checkstring(L, 1);
 
-  float area = luaL_checknumber(L, 3);
-  int spawnRate = luaL_checknumber(L, 4);
-  float radius = luaL_checknumber(L, 5);
-  float lifespan = luaL_checknumber(L, 6);
+    glm::vec3 pos;
+    get_tuple(L, 2, &pos[0], 3);
 
-  const char* direction_string = luaL_checkstring(L, 7);
-  luaL_argcheck(L, direction_string && std::strlen(direction_string) == 1,
-                7, "Single character expected");
-  char direction = std::tolower(direction_string[0]);
-  luaL_argcheck(L, direction >= 'x' && direction <= 'z', 
-                7, "Direction must be x, y or z");
+    float area = luaL_checknumber(L, 3);
+    int spawnRate = luaL_checknumber(L, 4);
+    float radius = luaL_checknumber(L, 5);
+    float lifespan = luaL_checknumber(L, 6);
 
-  float displacement = luaL_checknumber(L, 8);
+    const char* direction_string = luaL_checkstring(L, 7);
+    luaL_argcheck(L, direction_string && std::strlen(direction_string) == 1,
+                  7, "Single character expected");
+    char direction = std::tolower(direction_string[0]);
+    luaL_argcheck(L, direction >= 'x' && direction <= 'z',
+                  7, "Direction must be x, y or z");
 
-  gr_material_ud* matdata = (gr_material_ud*)luaL_checkudata(L, 9, "gr.material");
-  luaL_argcheck(L, matdata != 0, 9, "Material expected");
+    float displacement = luaL_checknumber(L, 8);
 
-  Material* material = matdata->material;
+    gr_material_ud* matdata = (gr_material_ud*) luaL_checkudata(L, 9, "gr.material");
+    luaL_argcheck(L, matdata != 0, 9, "Material expected");
 
-  data->particles = new ParticleNode(name, pos, area, spawnRate, radius,
-                                     lifespan, direction, displacement, material);
+    Material* material = matdata->material;
 
-  luaL_getmetatable(L, "gr.node");
-  lua_setmetatable(L, -2);
+    data->particles = new ParticleNode(name, pos, area, spawnRate, radius,
+                                       lifespan, direction, displacement, material);
 
-  return 1;
+    luaL_getmetatable(L, "gr.node");
+    lua_setmetatable(L, -2);
+
+    return 1;
 }
 
 // Render a scene
 extern "C"
 int gr_render_cmd(lua_State* L)
 {
-  GRLUA_DEBUG_CALL;
-  
-  gr_node_ud* root = (gr_node_ud*)luaL_checkudata(L, 1, "gr.node");
-  luaL_argcheck(L, root != 0, 1, "Root node expected");
+    GRLUA_DEBUG_CALL;
 
-  const char* filename = luaL_checkstring(L, 2);
+    gr_node_ud* root = (gr_node_ud*) luaL_checkudata(L, 1, "gr.node");
+    luaL_argcheck(L, root != 0, 1, "Root node expected");
 
-  int width = luaL_checknumber(L, 3);
-  int height = luaL_checknumber(L, 4);
-  int startFrame = luaL_checknumber(L, 5);
-  int numFrames = luaL_checknumber(L, 6);
+    const char* filename = luaL_checkstring(L, 2);
 
-  glm::vec3 eye;
-  glm::vec3 view, up;
-  
-  get_tuple(L, 7, &eye[0], 3);
-  get_tuple(L, 8, &view[0], 3);
-  get_tuple(L, 9, &up[0], 3);
+    int width = luaL_checknumber(L, 3);
+    int height = luaL_checknumber(L, 4);
+    int startFrame = luaL_checknumber(L, 5);
+    int numFrames = luaL_checknumber(L, 6);
 
-  double fov = luaL_checknumber(L, 10);
+    glm::vec3 eye;
+    glm::vec3 view, up;
 
-  double ambient_data[3];
-  get_tuple(L, 11, ambient_data, 3);
-  glm::vec3 ambient(ambient_data[0], ambient_data[1], ambient_data[2]);
+    get_tuple(L, 7, &eye[0], 3);
+    get_tuple(L, 8, &view[0], 3);
+    get_tuple(L, 9, &up[0], 3);
 
-  luaL_checktype(L, 12, LUA_TTABLE);
-  int light_count = int(lua_rawlen(L, 12));
-  
-  luaL_argcheck(L, light_count >= 1, 12, "Tuple of lights expected");
-  std::list<Light*> lights;
-  for (int i = 1; i <= light_count; i++) {
-    lua_rawgeti(L, 12, i);
-    gr_light_ud* ldata = (gr_light_ud*)luaL_checkudata(L, -1, "gr.light");
-    luaL_argcheck(L, ldata != 0, 12, "Light expected");
+    double fov = luaL_checknumber(L, 10);
 
-    lights.push_back(ldata->light);
-    lua_pop(L, 1);
-  }
+    double ambient_data[3];
+    get_tuple(L, 11, ambient_data, 3);
+    glm::vec3 ambient(ambient_data[0], ambient_data[1], ambient_data[2]);
 
-  luaL_checktype(L, 13, LUA_TTABLE);
-  int particle_count = int(lua_rawlen(L, 13));
-  
-  std::list<ParticleNode*> particles;
-  for (int i = 1; i <= particle_count; i++) {
-    lua_rawgeti(L, 13, i);
-    gr_particles_ud* ldata = (gr_particles_ud*)luaL_checkudata(L, -1, "gr.node");
-    luaL_argcheck(L, ldata != 0, 13, "Particle expected");
+    luaL_checktype(L, 12, LUA_TTABLE);
+    int light_count = int(lua_rawlen(L, 12));
 
-    particles.push_back(ldata->particles);
-    lua_pop(L, 1);
-  }
+    luaL_argcheck(L, light_count >= 1, 12, "Tuple of lights expected");
+    std::list<Light*> lights;
+    for (int i = 1; i <= light_count; i++)
+    {
+        lua_rawgeti(L, 12, i);
+        gr_light_ud* ldata = (gr_light_ud*) luaL_checkudata(L, -1, "gr.light");
+        luaL_argcheck(L, ldata != 0, 12, "Light expected");
 
-	Image im( width, height);
-	A5_Render(root->node, im, filename, startFrame, numFrames, 
-            eye, view, up, fov, ambient, lights, particles);
+        lights.push_back(ldata->light);
+        lua_pop(L, 1);
+    }
 
-	return 0;
+    luaL_checktype(L, 13, LUA_TTABLE);
+    int particle_count = int(lua_rawlen(L, 13));
+
+    std::list<ParticleNode*> particles;
+    for (int i = 1; i <= particle_count; i++)
+    {
+        lua_rawgeti(L, 13, i);
+        gr_particles_ud* ldata = (gr_particles_ud*) luaL_checkudata(L, -1, "gr.node");
+        luaL_argcheck(L, ldata != 0, 13, "Particle expected");
+
+        particles.push_back(ldata->particles);
+        lua_pop(L, 1);
+    }
+
+    Image im(width, height);
+    A5_Render(root->node, im, filename, startFrame, numFrames,
+              eye, view, up, fov, ambient, lights, particles);
+
+    return 0;
 }
 
 // Create a Material
 extern "C"
 int gr_material_cmd(lua_State* L)
 {
-  GRLUA_DEBUG_CALL;
-  
-  gr_material_ud* data = (gr_material_ud*)lua_newuserdata(L, sizeof(gr_material_ud));
-  data->material = 0;
-  
-  double kd[3], ks[3];
-  get_tuple(L, 1, kd, 3);
-  get_tuple(L, 2, ks, 3);
+    GRLUA_DEBUG_CALL;
 
-  double shininess = luaL_checknumber(L, 3);
-  
-  data->material = new PhongMaterial(glm::vec3(kd[0], kd[1], kd[2]),
-                                     glm::vec3(ks[0], ks[1], ks[2]),
-                                     shininess);
+    gr_material_ud* data = (gr_material_ud*) lua_newuserdata(L, sizeof(gr_material_ud));
+    data->material = 0;
 
-  luaL_newmetatable(L, "gr.material");
-  lua_setmetatable(L, -2);
-  
-  return 1;
+    double kd[3], ks[3];
+    get_tuple(L, 1, kd, 3);
+    get_tuple(L, 2, ks, 3);
+
+    double shininess = luaL_checknumber(L, 3);
+
+    data->material = new PhongMaterial(glm::vec3(kd[0], kd[1], kd[2]),
+                                       glm::vec3(ks[0], ks[1], ks[2]),
+                                       shininess);
+
+    luaL_newmetatable(L, "gr.material");
+    lua_setmetatable(L, -2);
+
+    return 1;
 }
 
 // Create a reflective material
 extern "C"
 int gr_reflective_material_cmd(lua_State* L)
 {
-  GRLUA_DEBUG_CALL;
-  
-  gr_material_ud* data = (gr_material_ud*)lua_newuserdata(L, sizeof(gr_material_ud));
-  data->material = 0;
-  
-  double kd[3], ks[3], kr[3];
-  get_tuple(L, 1, kd, 3);
-  get_tuple(L, 2, ks, 3);
-  get_tuple(L, 3, kr, 3);
+    GRLUA_DEBUG_CALL;
 
-  double shininess = luaL_checknumber(L, 4);
-  
-  data->material = new PhongMaterial(glm::vec3(kd[0], kd[1], kd[2]),
-                                     glm::vec3(ks[0], ks[1], ks[2]),
-                                     shininess,
-                                     glm::vec3(kr[0], kr[1], kr[2]));
+    gr_material_ud* data = (gr_material_ud*) lua_newuserdata(L, sizeof(gr_material_ud));
+    data->material = 0;
 
-  luaL_newmetatable(L, "gr.material");
-  lua_setmetatable(L, -2);
-  
-  return 1;
+    double kd[3], ks[3], kr[3];
+    get_tuple(L, 1, kd, 3);
+    get_tuple(L, 2, ks, 3);
+    get_tuple(L, 3, kr, 3);
+
+    double shininess = luaL_checknumber(L, 4);
+
+    data->material = new PhongMaterial(glm::vec3(kd[0], kd[1], kd[2]),
+                                       glm::vec3(ks[0], ks[1], ks[2]),
+                                       shininess,
+                                       glm::vec3(kr[0], kr[1], kr[2]));
+
+    luaL_newmetatable(L, "gr.material");
+    lua_setmetatable(L, -2);
+
+    return 1;
 }
 
 // Create a textured material
 extern "C"
 int gr_textured_material_cmd(lua_State* L)
 {
-  GRLUA_DEBUG_CALL;
-  
-  gr_material_ud* data = (gr_material_ud*)lua_newuserdata(L, sizeof(gr_material_ud));
-  data->material = 0;
-  
-  double kd[3], ks[3], kr[3];
-  get_tuple(L, 1, kd, 3);
-  get_tuple(L, 2, ks, 3);
-  get_tuple(L, 3, kr, 3);
+    GRLUA_DEBUG_CALL;
 
-  double shininess = luaL_checknumber(L, 4);
-  
-  const char* textureMapFile = luaL_checkstring(L, 5);
-  
-  data->material = new PhongTexture(glm::vec3(kd[0], kd[1], kd[2]),
-                                    glm::vec3(ks[0], ks[1], ks[2]),
-                                    glm::vec3(kr[0], kr[1], kr[2]),
-                                    shininess,
-                                    textureMapFile);
+    gr_material_ud* data = (gr_material_ud*) lua_newuserdata(L, sizeof(gr_material_ud));
+    data->material = 0;
 
-  luaL_newmetatable(L, "gr.material");
-  lua_setmetatable(L, -2);
-  
-  return 1;
+    double kd[3], ks[3], kr[3];
+    get_tuple(L, 1, kd, 3);
+    get_tuple(L, 2, ks, 3);
+    get_tuple(L, 3, kr, 3);
+
+    double shininess = luaL_checknumber(L, 4);
+
+    const char* textureMapFile = luaL_checkstring(L, 5);
+
+    data->material = new PhongTexture(glm::vec3(kd[0], kd[1], kd[2]),
+                                      glm::vec3(ks[0], ks[1], ks[2]),
+                                      glm::vec3(kr[0], kr[1], kr[2]),
+                                      shininess,
+                                      textureMapFile);
+
+    luaL_newmetatable(L, "gr.material");
+    lua_setmetatable(L, -2);
+
+    return 1;
 }
 
 // Add a Child to a node
 extern "C"
 int gr_node_add_child_cmd(lua_State* L)
 {
-  GRLUA_DEBUG_CALL;
-  
-  gr_node_ud* selfdata = (gr_node_ud*)luaL_checkudata(L, 1, "gr.node");
-  luaL_argcheck(L, selfdata != 0, 1, "Node expected");
+    GRLUA_DEBUG_CALL;
 
-  SceneNode* self = selfdata->node;
-  
-  gr_node_ud* childdata = (gr_node_ud*)luaL_checkudata(L, 2, "gr.node");
-  luaL_argcheck(L, childdata != 0, 2, "Node expected");
+    gr_node_ud* selfdata = (gr_node_ud*) luaL_checkudata(L, 1, "gr.node");
+    luaL_argcheck(L, selfdata != 0, 1, "Node expected");
 
-  SceneNode* child = childdata->node;
+    SceneNode* self = selfdata->node;
 
-  self->add_child(child);
+    gr_node_ud* childdata = (gr_node_ud*) luaL_checkudata(L, 2, "gr.node");
+    luaL_argcheck(L, childdata != 0, 2, "Node expected");
 
-  return 0;
+    SceneNode* child = childdata->node;
+
+    self->add_child(child);
+
+    return 0;
 }
 
 // Set a node's Material
 extern "C"
 int gr_node_set_material_cmd(lua_State* L)
 {
-  GRLUA_DEBUG_CALL;
-  
-  gr_node_ud* selfdata = (gr_node_ud*)luaL_checkudata(L, 1, "gr.node");
-  luaL_argcheck(L, selfdata != 0, 1, "Node expected");
+    GRLUA_DEBUG_CALL;
 
-  GeometryNode* self = dynamic_cast<GeometryNode*>(selfdata->node);
+    gr_node_ud* selfdata = (gr_node_ud*) luaL_checkudata(L, 1, "gr.node");
+    luaL_argcheck(L, selfdata != 0, 1, "Node expected");
 
-  luaL_argcheck(L, self != 0, 1, "Geometry node expected");
-  
-  gr_material_ud* matdata = (gr_material_ud*)luaL_checkudata(L, 2, "gr.material");
-  luaL_argcheck(L, matdata != 0, 2, "Material expected");
+    GeometryNode* self = dynamic_cast<GeometryNode*>(selfdata->node);
 
-  Material* material = matdata->material;
+    luaL_argcheck(L, self != 0, 1, "Geometry node expected");
 
-  self->setMaterial(material);
+    gr_material_ud* matdata = (gr_material_ud*) luaL_checkudata(L, 2, "gr.material");
+    luaL_argcheck(L, matdata != 0, 2, "Material expected");
 
-  return 0;
+    Material* material = matdata->material;
+
+    self->setMaterial(material);
+
+    return 0;
 }
 
 // Set a node's animation
 extern "C"
 int gr_node_set_animation_cmd(lua_State* L)
 {
-  gr_animation_ud* data = (gr_animation_ud*)lua_newuserdata(L, sizeof(gr_animation_ud));
-  data->animation = 0;
-  
-  float start = luaL_checknumber(L, 2);
-  float end = luaL_checknumber(L, 3);
+    gr_animation_ud* data = (gr_animation_ud*) lua_newuserdata(L, sizeof(gr_animation_ud));
+    data->animation = 0;
 
-  const char* type_string = luaL_checkstring(L, 4);
-  luaL_argcheck(L, type_string && std::strlen(type_string) == 1,
-                4, "Single character expected");
-  char type = std::tolower(type_string[0]);
-  
-  const char* preset = luaL_checkstring(L, 5);
-  
-  data->animation = new Animation(start, end, type, preset);
-  
-  gr_node_ud* selfdata = (gr_node_ud*)luaL_checkudata(L, 1, "gr.node");
-  luaL_argcheck(L, selfdata != 0, 1, "Node expected");
+    float start = luaL_checknumber(L, 2);
+    float end = luaL_checknumber(L, 3);
 
-  SceneNode* self = dynamic_cast<SceneNode*>(selfdata->node);
+    const char* type_string = luaL_checkstring(L, 4);
+    luaL_argcheck(L, type_string && std::strlen(type_string) == 1,
+                  4, "Single character expected");
+    char type = std::tolower(type_string[0]);
 
-  luaL_argcheck(L, self != 0, 1, "Scene node expected");
+    const char* preset = luaL_checkstring(L, 5);
 
-  Animation* animation = data->animation;
+    data->animation = new Animation(start, end, type, preset);
 
-  self->setAnimation(animation);
+    gr_node_ud* selfdata = (gr_node_ud*) luaL_checkudata(L, 1, "gr.node");
+    luaL_argcheck(L, selfdata != 0, 1, "Node expected");
 
-  return 0;
+    SceneNode* self = dynamic_cast<SceneNode*>(selfdata->node);
+
+    luaL_argcheck(L, self != 0, 1, "Scene node expected");
+
+    Animation* animation = data->animation;
+
+    self->setAnimation(animation);
+
+    return 0;
 }
 
 // Set a node's displacement map
 extern "C"
 int gr_node_set_displacement_map_cmd(lua_State* L)
 {
-  gr_animation_ud* data = (gr_animation_ud*)lua_newuserdata(L, sizeof(gr_animation_ud));
-  data->animation = 0;
-  
-  float start = luaL_checknumber(L, 2);
-  float end = luaL_checknumber(L, 3);
-  
-  const char* preset = luaL_checkstring(L, 4);
-  
-  data->animation = new Animation(start, end, 'd', preset);
-  
-  gr_node_ud* selfdata = (gr_node_ud*)luaL_checkudata(L, 1, "gr.node");
-  luaL_argcheck(L, selfdata != 0, 1, "Node expected");
+    gr_animation_ud* data = (gr_animation_ud*) lua_newuserdata(L, sizeof(gr_animation_ud));
+    data->animation = 0;
 
-  GeometryNode* self = dynamic_cast<GeometryNode*>(selfdata->node);
+    float start = luaL_checknumber(L, 2);
+    float end = luaL_checknumber(L, 3);
 
-  luaL_argcheck(L, self != 0, 1, "Geometry node expected");
+    const char* preset = luaL_checkstring(L, 4);
 
-  Animation* displacementMap = data->animation;
+    data->animation = new Animation(start, end, 'd', preset);
 
-  self->setDisplacementMap(displacementMap);
+    gr_node_ud* selfdata = (gr_node_ud*) luaL_checkudata(L, 1, "gr.node");
+    luaL_argcheck(L, selfdata != 0, 1, "Node expected");
 
-  return 0;
+    GeometryNode* self = dynamic_cast<GeometryNode*>(selfdata->node);
+
+    luaL_argcheck(L, self != 0, 1, "Geometry node expected");
+
+    Animation* displacementMap = data->animation;
+
+    self->setDisplacementMap(displacementMap);
+
+    return 0;
 }
 
 // Add a Scaling transformation to a node.
 extern "C"
 int gr_node_scale_cmd(lua_State* L)
 {
-  GRLUA_DEBUG_CALL;
-  
-  gr_node_ud* selfdata = (gr_node_ud*)luaL_checkudata(L, 1, "gr.node");
-  luaL_argcheck(L, selfdata != 0, 1, "Node expected");
+    GRLUA_DEBUG_CALL;
 
-  SceneNode* self = selfdata->node;
+    gr_node_ud* selfdata = (gr_node_ud*) luaL_checkudata(L, 1, "gr.node");
+    luaL_argcheck(L, selfdata != 0, 1, "Node expected");
 
-  double values[3];
-  
-  for (int i = 0; i < 3; i++) {
-    values[i] = luaL_checknumber(L, i + 2);
-  }
+    SceneNode* self = selfdata->node;
 
-  self->scale(glm::vec3(values[0], values[1], values[2]));
+    double values[3];
 
-  return 0;
+    for (int i = 0; i < 3; i++)
+    {
+        values[i] = luaL_checknumber(L, i + 2);
+    }
+
+    self->scale(glm::vec3(values[0], values[1], values[2]));
+
+    return 0;
 }
 
 // Add a Translation to a node.
 extern "C"
 int gr_node_translate_cmd(lua_State* L)
 {
-  GRLUA_DEBUG_CALL;
-  
-  gr_node_ud* selfdata = (gr_node_ud*)luaL_checkudata(L, 1, "gr.node");
-  luaL_argcheck(L, selfdata != 0, 1, "Node expected");
+    GRLUA_DEBUG_CALL;
 
-  SceneNode* self = selfdata->node;
+    gr_node_ud* selfdata = (gr_node_ud*) luaL_checkudata(L, 1, "gr.node");
+    luaL_argcheck(L, selfdata != 0, 1, "Node expected");
 
-  double values[3];
-  
-  for (int i = 0; i < 3; i++) {
-    values[i] = luaL_checknumber(L, i + 2);
-  }
+    SceneNode* self = selfdata->node;
 
-  self->translate(glm::vec3(values[0], values[1], values[2]));
+    double values[3];
 
-  return 0;
+    for (int i = 0; i < 3; i++)
+    {
+        values[i] = luaL_checknumber(L, i + 2);
+    }
+
+    self->translate(glm::vec3(values[0], values[1], values[2]));
+
+    return 0;
 }
 
 // Rotate a node.
 extern "C"
 int gr_node_rotate_cmd(lua_State* L)
 {
-  GRLUA_DEBUG_CALL;
-  
-  gr_node_ud* selfdata = (gr_node_ud*)luaL_checkudata(L, 1, "gr.node");
-  luaL_argcheck(L, selfdata != 0, 1, "Node expected");
+    GRLUA_DEBUG_CALL;
 
-  SceneNode* self = selfdata->node;
+    gr_node_ud* selfdata = (gr_node_ud*) luaL_checkudata(L, 1, "gr.node");
+    luaL_argcheck(L, selfdata != 0, 1, "Node expected");
 
-  const char* axis_string = luaL_checkstring(L, 2);
+    SceneNode* self = selfdata->node;
 
-  luaL_argcheck(L, axis_string
-                && std::strlen(axis_string) == 1, 2, "Single character expected");
-  char axis = std::tolower(axis_string[0]);
-  
-  luaL_argcheck(L, axis >= 'x' && axis <= 'z', 2, "Axis must be x, y or z");
-  
-  double angle = luaL_checknumber(L, 3);
+    const char* axis_string = luaL_checkstring(L, 2);
 
-  self->rotate(axis, angle);
+    luaL_argcheck(L, axis_string
+                  && std::strlen(axis_string) == 1, 2, "Single character expected");
+    char axis = std::tolower(axis_string[0]);
 
-  return 0;
+    luaL_argcheck(L, axis >= 'x' && axis <= 'z', 2, "Axis must be x, y or z");
+
+    double angle = luaL_checknumber(L, 3);
+
+    self->rotate(axis, angle);
+
+    return 0;
 }
 
 // Garbage collection function for lua.
 extern "C"
 int gr_node_gc_cmd(lua_State* L)
 {
-  GRLUA_DEBUG_CALL;
-  
-  gr_node_ud* data = (gr_node_ud*)luaL_checkudata(L, 1, "gr.node");
-  luaL_argcheck(L, data != 0, 1, "Node expected");
+    GRLUA_DEBUG_CALL;
 
-  // Note that we don't delete the node here. This is because we still
-  // want the scene to be around when we close the lua interpreter,
-  // but at that point everything will be garbage collected.
-  //
-  // If data->node happened to be a reference-counting pointer, this
-  // will in fact just decrease lua's reference to it, so it's not a
-  // bad thing to include this line.
-  data->node = 0;
+    gr_node_ud* data = (gr_node_ud*) luaL_checkudata(L, 1, "gr.node");
+    luaL_argcheck(L, data != 0, 1, "Node expected");
 
-  return 0;
+    // Note that we don't delete the node here. This is because we still
+    // want the scene to be around when we close the lua interpreter,
+    // but at that point everything will be garbage collected.
+    //
+    // If data->node happened to be a reference-counting pointer, this
+    // will in fact just decrease lua's reference to it, so it's not a
+    // bad thing to include this line.
+    data->node = 0;
+
+    return 0;
 }
 
 // This is where all the "global" functions in our library are
 // declared.
 // If you want to add a new non-member function, add it HERE.
 static const luaL_Reg grlib_functions[] = {
-  {"node", gr_node_cmd},
-  {"sphere", gr_sphere_cmd},
-  {"joint", gr_joint_cmd},
-  {"material", gr_material_cmd},
-  // Custom for assignment 5
-  {"particles", gr_particles_cmd},
-  {"reflective_material", gr_reflective_material_cmd},
-  {"textured_material", gr_textured_material_cmd},
-  // New for assignment 4
-  {"cube", gr_cube_cmd},
-  {"nh_sphere", gr_nh_sphere_cmd},
-  {"nh_box", gr_nh_box_cmd},
-  {"mesh", gr_mesh_cmd},
-  {"light", gr_light_cmd},
-  {"render", gr_render_cmd},
-  {0, 0}
+    {"node", gr_node_cmd},
+    {"sphere", gr_sphere_cmd},
+    {"joint", gr_joint_cmd},
+    {"material", gr_material_cmd},
+    // Custom for assignment 5
+    {"particles", gr_particles_cmd},
+    {"reflective_material", gr_reflective_material_cmd},
+    {"textured_material", gr_textured_material_cmd},
+    // New for assignment 4
+    {"cube", gr_cube_cmd},
+    {"nh_sphere", gr_nh_sphere_cmd},
+    {"nh_box", gr_nh_box_cmd},
+    {"mesh", gr_mesh_cmd},
+    {"light", gr_light_cmd},
+    {"render", gr_render_cmd},
+    {0, 0}
 };
 
 // This is where all the member functions for "gr.node" objects are
@@ -729,57 +737,58 @@ static const luaL_Reg grlib_functions[] = {
 // the appropriate member functions (e.g. gr_node_set_material_cmd
 // ensures that the node is a GeometryNode, see above).
 static const luaL_Reg grlib_node_methods[] = {
-  {"__gc", gr_node_gc_cmd},
-  {"add_child", gr_node_add_child_cmd},
-  {"set_material", gr_node_set_material_cmd},
-  {"set_animation", gr_node_set_animation_cmd},
-  {"set_displacement_map", gr_node_set_displacement_map_cmd},
-  {"scale", gr_node_scale_cmd},
-  {"rotate", gr_node_rotate_cmd},
-  {"translate", gr_node_translate_cmd},
-  {"render", gr_render_cmd},
-  {0, 0}
+    {"__gc", gr_node_gc_cmd},
+    {"add_child", gr_node_add_child_cmd},
+    {"set_material", gr_node_set_material_cmd},
+    {"set_animation", gr_node_set_animation_cmd},
+    {"set_displacement_map", gr_node_set_displacement_map_cmd},
+    {"scale", gr_node_scale_cmd},
+    {"rotate", gr_node_rotate_cmd},
+    {"translate", gr_node_translate_cmd},
+    {"render", gr_render_cmd},
+    {0, 0}
 };
 
 // This function calls the lua interpreter to define the scene and
 // raytrace it as appropriate.
 bool run_lua(const std::string& filename)
 {
-  GRLUA_DEBUG("Importing scene from " << filename);
-  
-  // Start a lua interpreter
-  lua_State* L = luaL_newstate();
+    GRLUA_DEBUG("Importing scene from " << filename);
 
-  GRLUA_DEBUG("Loading base libraries");
-  
-  // Load some base library
-  luaL_openlibs(L);
+    // Start a lua interpreter
+    lua_State* L = luaL_newstate();
 
-  GRLUA_DEBUG("Setting up our functions");
+    GRLUA_DEBUG("Loading base libraries");
 
-  // Set up the metatable for gr.node
-  luaL_newmetatable(L, "gr.node");
-  lua_pushstring(L, "__index");
-  lua_pushvalue(L, -2);
-  lua_settable(L, -3);
+    // Load some base library
+    luaL_openlibs(L);
 
-  // Load the gr.node methods
-  luaL_setfuncs( L, grlib_node_methods, 0 );
+    GRLUA_DEBUG("Setting up our functions");
 
-  // Load the gr functions
-  luaL_setfuncs(L, grlib_functions, 0);
-  lua_setglobal(L, "gr");
+    // Set up the metatable for gr.node
+    luaL_newmetatable(L, "gr.node");
+    lua_pushstring(L, "__index");
+    lua_pushvalue(L, -2);
+    lua_settable(L, -3);
 
-  GRLUA_DEBUG("Parsing the scene...");
-  // Now parse the actual scene
-  if (luaL_loadfile(L, filename.c_str()) || lua_pcall(L, 0, 0, 0)) {
-    std::cerr << "Error loading " << filename << ": " << lua_tostring(L, -1) << std::endl;
-    return false;
-  }
-  GRLUA_DEBUG("Closing the interpreter");
-  
-  // Close the interpreter, free up any resources not needed
-  lua_close(L);
+    // Load the gr.node methods
+    luaL_setfuncs(L, grlib_node_methods, 0);
 
-  return true;
+    // Load the gr functions
+    luaL_setfuncs(L, grlib_functions, 0);
+    lua_setglobal(L, "gr");
+
+    GRLUA_DEBUG("Parsing the scene...");
+    // Now parse the actual scene
+    if (luaL_loadfile(L, filename.c_str()) || lua_pcall(L, 0, 0, 0))
+    {
+        std::cerr << "Error loading " << filename << ": " << lua_tostring(L, -1) << std::endl;
+        return false;
+    }
+    GRLUA_DEBUG("Closing the interpreter");
+
+    // Close the interpreter, free up any resources not needed
+    lua_close(L);
+
+    return true;
 }

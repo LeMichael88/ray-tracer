@@ -7,17 +7,17 @@
 
 class GeometryNode : public SceneNode {
 public:
-	GeometryNode(
-		const std::string& name,
-		Primitive* prim, 
-		Material* mat = nullptr
-	);
+    GeometryNode(
+        const std::string& name,
+        Primitive* prim,
+        Material* mat = nullptr
+    );
 
-	void setMaterial(Material* material);
-	void setDisplacementMap(Animation* displacementMap);
+    void setMaterial(Material* material);
+    void setDisplacementMap(Animation* displacementMap);
 
-	virtual Intersection intersect(const Ray& ray) const;
+    virtual Intersection intersect(const Ray& ray) const;
 
-	Material* m_material;
-	Primitive* m_primitive;
+    Material* m_material;
+    Primitive* m_primitive;
 };

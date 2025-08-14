@@ -19,25 +19,25 @@ using Color = glm::vec3;
  */
 class PhongMaterial : public Material {
 public:
-  PhongMaterial(
-    const glm::vec3& kd, 
-    const glm::vec3& ks,
-    double shininess,
-    const glm::vec3& kr = glm::vec3(0.0f)
-  );
-  ~PhongMaterial() override;
+    PhongMaterial(
+        const glm::vec3& kd,
+        const glm::vec3& ks,
+        double shininess,
+        const glm::vec3& kr = glm::vec3(0.0f)
+    );
+    ~PhongMaterial() override;
 
-  // Getters for coefficients
-  [[nodiscard]] virtual glm::vec3 kd(const glm::vec2& uv) const { return m_kd; };
-  [[nodiscard]] virtual glm::vec3 ks(const glm::vec2& uv) const { return m_ks; };
-  [[nodiscard]] virtual glm::vec3 kr(const glm::vec2& uv) const { return m_kr; };
-  [[nodiscard]] double shininess() const { return m_shininess; };
+    // Getters for coefficients
+    [[nodiscard]] virtual glm::vec3 kd(const glm::vec2& uv) const { return m_kd; };
+    [[nodiscard]] virtual glm::vec3 ks(const glm::vec2& uv) const { return m_ks; };
+    [[nodiscard]] virtual glm::vec3 kr(const glm::vec2& uv) const { return m_kr; };
+    [[nodiscard]] double shininess() const { return m_shininess; };
 
 protected:
-  glm::vec3 m_kd;
-  glm::vec3 m_ks;
-  glm::vec3 m_kr;
-  double m_shininess;
+    glm::vec3 m_kd;
+    glm::vec3 m_ks;
+    glm::vec3 m_kr;
+    double m_shininess;
 };
 
 /**
@@ -47,21 +47,20 @@ protected:
  */
 class PhongTexture final : public PhongMaterial {
 public:
-  PhongTexture(
-    const glm::vec3& kd, 
-    const glm::vec3& ks,
-    const glm::vec3& kr, 
-    double shininess,
-    const std::string& textureFile
-  );
-  ~PhongTexture() override;
+    PhongTexture(
+        const glm::vec3& kd,
+        const glm::vec3& ks,
+        const glm::vec3& kr,
+        double shininess,
+        const std::string& textureFile
+    );
+    ~PhongTexture() override;
 
-  [[nodiscard]] glm::vec3 kd(const glm::vec2& uv) const override;
-  [[nodiscard]] glm::vec3 ks(const glm::vec2& uv) const override;
-  [[nodiscard]] glm::vec3 kr(const glm::vec2& uv) const override;
-
-  [[nodiscard]] Color getColorFromMap(const glm::vec2& uv) const;
+    [[nodiscard]] glm::vec3 kd(const glm::vec2& uv) const override;
+    [[nodiscard]] glm::vec3 ks(const glm::vec2& uv) const override;
+    [[nodiscard]] glm::vec3 kr(const glm::vec2& uv) const override;
+    [[nodiscard]] Color getColorFromMap(const glm::vec2& uv) const;
 
 private:
-  Image textureMap;
+    Image textureMap;
 };

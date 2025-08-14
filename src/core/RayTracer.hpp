@@ -23,62 +23,61 @@ const int MAX_DEPTH = 5;
 
 class RayTracer {
 public:
-	RayTracer(
-		SceneNode* root,
-		const glm::mat4& screenToWorld,
-		const glm::vec3& eye,
-		const glm::vec3& ambient,
-		const std::list<Light*>& lights,
-		Image* image
-	);
+    RayTracer(
+        SceneNode* root,
+        const glm::mat4& screenToWorld,
+        const glm::vec3& eye,
+        const glm::vec3& ambient,
+        const std::list<Light*>& lights,
+        Image* image
+    );
 
-	void preprocessAnimation(SceneNode* node, const float t);
-	void resetAnimation(SceneNode* node);
-
-	void traverseSceneGraph(
-		const SceneNode* node,
-		Ray ray,
-		Intersection& intersection,
-		glm::mat4 trans,
-		glm::mat4 invTrans
-	) const;
-	Color raytrace(Ray& ray, const int currDepth) const;
-	void render(
-		const int frameNum,
-		const int threadNum,
-		const int startWidth,
-		const int endWidth
-	) const;
+    void preprocessAnimation(SceneNode* node, const float t);
+    void resetAnimation(SceneNode* node);
+    void traverseSceneGraph(
+        const SceneNode* node,
+        Ray ray,
+        Intersection& intersection,
+        glm::mat4 trans,
+        glm::mat4 invTrans
+    ) const;
+    Color raytrace(Ray& ray, int currDepth) const;
+    void render(
+        int frameNum,
+        int threadNum,
+        int startWidth,
+        int endWidth
+    ) const;
 
 private:
-	SceneNode* m_root;
-	glm::mat4 m_screenToWorld;
-	glm::vec3 m_eye;
-	glm::vec3 m_ambient;
-	std::list<Light*> m_lights;
-	Image* m_image;
+    SceneNode* m_root;
+    glm::mat4 m_screenToWorld;
+    glm::vec3 m_eye;
+    glm::vec3 m_ambient;
+    std::list<Light*> m_lights;
+    Image* m_image;
 };
 
 void A5_Render(
-	// What to render
-	SceneNode* root,
+    // What to render
+    SceneNode* root,
 
-	// Image to write to, set to a given width and height
-	Image& image,
-	const char* fileName,
-	const int startFrame,
-	const int numFrames,
+    // Image to write to, set to a given width and height
+    Image& image,
+    const char* fileName,
+    int startFrame,
+    int numFrames,
 
-	// Viewing parameters
-	const glm::vec3& eye,
-	const glm::vec3& view,
-	const glm::vec3& up,
-	double fovy,
+    // Viewing parameters
+    const glm::vec3& eye,
+    const glm::vec3& view,
+    const glm::vec3& up,
+    double fovy,
 
-	// Lighting parameters
-	const glm::vec3& ambient,
-	const std::list<Light*>& lights,
+    // Lighting parameters
+    const glm::vec3& ambient,
+    const std::list<Light*>& lights,
 
-	// Particle systems
-	const std::list<ParticleNode*>& particleSpawners
+    // Particle systems
+    const std::list<ParticleNode*>& particleSpawners
 );
